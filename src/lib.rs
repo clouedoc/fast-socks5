@@ -235,7 +235,8 @@ pub enum ReplyError {
     CommandNotSupported,
     #[error("Address type not supported")]
     AddressTypeNotSupported,
-    //    OtherReply(u8),
+    #[error("Other reply: {0}")]
+    OtherReply(u8),
 }
 
 impl ReplyError {
@@ -253,7 +254,7 @@ impl ReplyError {
             ReplyError::TtlExpired              => consts::SOCKS5_REPLY_TTL_EXPIRED,
             ReplyError::CommandNotSupported     => consts::SOCKS5_REPLY_COMMAND_NOT_SUPPORTED,
             ReplyError::AddressTypeNotSupported => consts::SOCKS5_REPLY_ADDRESS_TYPE_NOT_SUPPORTED,
-//            ReplyError::OtherReply(c)           => c,
+            ReplyError::OtherReply(c)           => c,
         }
     }
 
@@ -270,8 +271,7 @@ impl ReplyError {
             consts::SOCKS5_REPLY_TTL_EXPIRED                => ReplyError::TtlExpired,
             consts::SOCKS5_REPLY_COMMAND_NOT_SUPPORTED      => ReplyError::CommandNotSupported,
             consts::SOCKS5_REPLY_ADDRESS_TYPE_NOT_SUPPORTED => ReplyError::AddressTypeNotSupported,
-//            _                                               => ReplyError::OtherReply(code),
-            _                                               => unreachable!("ReplyError code unsupported."),
+            _                                               => ReplyError::OtherReply(code),
         }
     }
 }
